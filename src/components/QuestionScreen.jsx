@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { askQuestion } from '../APIService/APIService';
-import { Bars, Dna } from 'react-loader-spinner'
+import {  Dna } from 'react-loader-spinner'
 
 
 
@@ -72,7 +72,7 @@ function QuestionScreen() {
               ? <></>
               : <>
                 <h1 className='ans-heading'>Answer </h1>
-                <p>{answer}</p>
+                <p className='ans'>{answer}</p>
               </>
         }
       </div>
