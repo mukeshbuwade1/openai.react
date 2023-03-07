@@ -10,12 +10,13 @@ function QuestionScreen() {
   const [answer, setAnswer] = useState('');
 
   async function handleSubmit(event) {
+    if (status === "loading") { return }
     event.preventDefault();
     let question = inputRef.current.value
-    if(!question  || typeof question!=="string"|| question.trim().length===0){
+    if (!question || typeof question !== "string" || question.trim().length === 0) {
       alert("Script Error Refresh Page")
       return
-    } 
+    }
     setStatus("loading")
     let data = {
       "question": question
@@ -36,7 +37,7 @@ function QuestionScreen() {
       setStatus("error")
     }
   }
- 
+
   return (
     <div className='container' >
       <h1 className='page-heading' >AI Based Answer Generator</h1>
