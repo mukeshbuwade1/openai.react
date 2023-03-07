@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { askQuestion } from '../APIService/APIService';
-import {  Dna } from 'react-loader-spinner'
+import { Dna } from 'react-loader-spinner'
 
 
 
 function QuestionScreen() {
+  const inputRef = useRef('')
   const [status, setStatus] = useState("");
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('AI Based Answer GeneratorAI Based Answer GeneratorAI Based Answer GeneratorAI Based Answer Generator');
-
-  function handleInputChange(event) {
-    setQuestion(event.target.value);
-  }
+  const [answer, setAnswer] = useState('');
 
   async function handleSubmit(event) {
-    setStatus("loading")
     event.preventDefault();
-    // Do something with the question input (e.g. send it to a server)
-    console.log('Question:', question);
+    let question = inputRef.current.value
+    if(!question  || typeof question!=="string"|| question.trim().length===0){
+      alert("Script Error Refresh Page")
+      return
+    } 
+    setStatus("loading")
     let data = {
       "question": question
     }
     try {
+      // connection with node sever 
       let res = await askQuestion(data)
       if (res?.error) {
         alert(res?.message ?? "Something went wrong")
@@ -35,10 +35,8 @@ function QuestionScreen() {
       alert(error?.message ?? "Something went wrong")
       setStatus("error")
     }
-
-    // setQuestion('');
   }
-  console.log("ans", answer)
+ 
   return (
     <div className='container' >
       <h1 className='page-heading' >AI Based Answer Generator</h1>
@@ -48,9 +46,9 @@ function QuestionScreen() {
           <input
             type="text"
             id="question"
-            value={question}
-            onChange={handleInputChange} required
-            autocomplete="off"
+            ref={inputRef}
+            required
+            autoComplete="off"
           />
           <div className="underline"></div>
           <label htmlFor="question">Your Question</label>
